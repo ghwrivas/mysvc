@@ -1,0 +1,12 @@
+gradlew test
+gradlew build
+java -jar build\libs\mysvc-0.0.1-SNAPSHOT.jar
+gradlew build && java -jar build\libs\mysvc-0.0.1-SNAPSHOT.jar
+
+docker build --build-arg JAR_FILE=build/libs/*.jar -t springio/gs-spring-boot-docker .
+
+docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8100:8100 -t springio/gs-spring-boot-docker
+docker run -e "SPRING_PROFILES_ACTIVE=dev" -p 8100:8100 -t springio/gs-spring-boot-docker
+
+debug app in docker
+docker run -e "JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n" -p 8100:8100 -p 5005:5005 -t springio/gs-spring-boot-docker
